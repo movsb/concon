@@ -17,6 +17,7 @@ namespace concon {
 		DWORD _dw_wait_interval_fg;
 		DWORD _dw_wait_interval_bg;
 		bool _b_fg;
+		void(*_callback)(const char* str);
 
 	protected:
 		HANDLE _h_stdin_write;
@@ -43,6 +44,7 @@ namespace concon {
 		bool print(LPCTSTR fmt, ...);
 		void set_interval(DWORD fg, DWORD bg);
 		void set_foreground(bool fg);
+		void set_callback(void(*)(const char* str));
 	};
 }
 

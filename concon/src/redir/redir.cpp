@@ -10,6 +10,7 @@ redir_t::redir_t()
 , _dw_wait_interval_fg(100)
 , _dw_wait_interval_bg(1000)
 , _b_fg(true)
+, _callback(nullptr)
 , _h_stdin_write(nullptr)
 , _h_stdout_read(nullptr)
 , _h_child_process(nullptr)
@@ -115,8 +116,9 @@ DWORD WINAPI redir_t::thread_output(LPVOID ud)
 
 void redir_t::write_stdout(LPCTSTR str)
 {
-	::printf(str);
-	//::MessageBox(nullptr, str, "", MB_OK);
+	if(_callback) {
+		_callback(str);
+	}
 }
 
 bool redir_t::open(LPCTSTR cmdline, LPCTSTR working_directory)
@@ -209,5 +211,11 @@ void redir_t::set_foreground(bool fg)
 {
 	_b_fg = fg;
 }
+
+void redir_t::set_callback(void(*fn)(const char* str))
+{
+	_callback = fn;
+}
+
 }
 
